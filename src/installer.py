@@ -103,6 +103,15 @@ Categories=Utility;
             shortcut.IconLocation = icon_dest
             shortcut.save()
 
+        
+        parent_dir = os.path.dirname(current_dir)
+        if os.path.basename(parent_dir) == "Py-autoclicker":
+            try:
+                shutil.rmtree(parent_dir)
+                print(f"Directory {parent_dir} deleted successfully.")
+            except Exception as e:
+                print(f"Failed to delete directory {parent_dir}: {e}")
+
         messagebox.showinfo("Installation Successful", "Py-AutoClicker has been installed successfully.")
         self.root.destroy()
 
