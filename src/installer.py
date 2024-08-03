@@ -30,7 +30,6 @@ class AutoClickerInstaller:
         install_dir = filedialog.askdirectory(title="Choose Installation Directory")
         if not install_dir:
             return
-        
 
         install_dir = os.path.join(install_dir, "py-autoclicker")
         os.makedirs(install_dir, exist_ok=True)
@@ -43,7 +42,6 @@ class AutoClickerInstaller:
             elif os.path.isdir(item_path) and item != "__pycache__":
                 shutil.copytree(item_path, os.path.join(install_dir, item))
 
-
         icon_dest = os.path.join(install_dir, "py-autoclicker.png")
         shutil.copy(self.icon_path, icon_dest)
 
@@ -52,7 +50,6 @@ class AutoClickerInstaller:
         except subprocess.CalledProcessError as e:
             messagebox.showerror("Installation Error", f"Failed to install Python packages: {e}")
             return
-
 
         if platform.system() == "Windows":
             script_name = "Py-autoclicker.bat"
@@ -77,26 +74,24 @@ Terminal=false
 Type=Application
 Categories=Utility;
 """
+            desktop_path = "/usr/share/applications/py-autoclicker.desktop"
 
-desktop_path = "/usr/share/applications/py-autoclicker.desktop"
+            desktop_dir = os.path.dirname(desktop_path)
 
-desktop_dir = os.path.dirname(general_desktop_path)
+            if not os.path.exists(desktop_dir):
+                try:
+                    os.makedirs(desktop_dir)
+                except OSError as e:
+                    print(f"Error creating directory {desktop_dir}: {e}")
+                    raise
 
-if not os.path.exists(desktop_dir):
-    try:
-        os.makedirs(desktop_dir)
-    except OSError as e:
-        print(f"Error creating directory {desktop_dir}: {e}")
-        raise
-
-try:
-    with open(desktop_path, "w") as f:
-        f.write(desktop_file_content)
-    print(f"Desktop file created at {desktop_path}")
-except IOError as e:
-    print(f"Error writing desktop file {desktop_path}: {e}")
-    raise
-
+            try:
+                with open(desktop_path, "w") as f:
+                    f.write(desktop_file_content)
+                print(f"Desktop file created at {desktop_path}")
+            except IOError as e:
+                print(f"Error writing desktop file {desktop_path}: {e}")
+                raise
 
         if platform.system() == "Windows":
             from win32com.client import Dispatch
